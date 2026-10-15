@@ -1,0 +1,17 @@
+{
+  "network": "GenLayer Studio Network",
+  "chain_id": 61999,
+  "rpc": "https://studio.genlayer.com/api",
+  "source_commit": "b0e2bbe812178e649f836cd0907b855773e07861",
+  "contract_address": "0xA86B5963F4087fCb4ABE290A965C6e947491F850",
+  "deployment_tx": "0x65e84d0e1fc66a5e333126d1e9157057b7158caa0dfc55461d2a300f5beed05a",
+  "deployment_status": "FINALIZED",
+  "consensus_result": "MAJORITY_AGREE",
+  "deployed_source_matches_repository": true,
+  "readback": {
+    "method": "get_result",
+    "value": { "phase": "COMMIT", "winner": "", "price": 0, "bidder_count": 0 }
+  },
+  "lifecycle_test": "BLOCKED",
+  "blocker": "The auction excludes its buyer as a bidder and requires a second funded account. The configured buyer has 0 GEN and the other configured account has 1 wei; no full commit/reveal/settlement test was claimed."
+}
