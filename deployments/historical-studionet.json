@@ -1,0 +1,65 @@
+{
+  "status": "HISTORICAL_SUPERSEDED_NOT_CURRENT_PROOF",
+  "notice": "Archived verbatim legacy evidence. Mixed top-level/embedded deployments are not a canonical current release. Earlier normalized source comparisons were not byte-exact proofs. Refer to deployment-specific embedded addresses; current fixed source requires a new deployment.",
+  "legacy_record": {
+    "network": "GenLayer Studio Network",
+    "chain_id": 61999,
+    "rpc": "https://studio.genlayer.com/api",
+    "source_commit": "b0e2bbe812178e649f836cd0907b855773e07861",
+    "contract_address": "0x92D8AdFFB2F7387c8905858cc5a7eef4a1FECAD4",
+    "deployment_tx": "0x478c5afc129883b60b984750fe15df228bc59abc2ed0600079145511e0fd6f3a",
+    "deployment_status": "FINALIZED",
+    "consensus_result": "MAJORITY_AGREE",
+    "deployed_source_matches_repository": true,
+    "readback": {
+      "method": "get_result",
+      "value": {
+        "phase": "SETTLED",
+        "winner": "0x2c33c95575530580eeb377fc6f841dea694fd4ae",
+        "price": 50,
+        "bidder_count": 1
+      }
+    },
+    "lifecycle_test": "FINALIZED_SINGLE_BIDDER_LIFECYCLE",
+    "limitation": "A second independent bidder was not used, so live minimum-price competition is not established; local tests cover price selection across multiple bidders.",
+    "historical_previous_wallet_deployment": {
+      "contract_address": "0xA86B5963F4087fCb4ABE290A965C6e947491F850",
+      "deployment_tx": "0x65e84d0e1fc66a5e333126d1e9157057b7158caa0dfc55461d2a300f5beed05a",
+      "note": "Superseded by this fresh-wallet StudioNet deployment."
+    },
+    "fresh_wallet_test": {
+      "owner": "0x1ddf74a14205ab1cc76cac45b2ae0b29a9b78174",
+      "contract_address": "0x92D8AdFFB2F7387c8905858cc5a7eef4a1FECAD4",
+      "deployment_tx": "0x478c5afc129883b60b984750fe15df228bc59abc2ed0600079145511e0fd6f3a",
+      "deployment_status": "FINALIZED",
+      "test_status": "FINALIZED_SUCCESS",
+      "auction_id": "six-wallet-auction-20261015",
+      "transactions": [
+        {
+          "method": "commit_bid",
+          "tx": "0xa7258f6b9c9cbfb221715a0388df0fc994fbcab16b6a3cb60dbbf7cbbcff9d20",
+          "status": "FINALIZED",
+          "sender": "0x2c33c95575530580eeb377fc6f841dea694fd4ae"
+        },
+        {
+          "method": "reveal_bid",
+          "tx": "0x707c0e34623e476774e81fd2cb8f44b91f50cfb4fb296b46fdfd8e9f9996f44d",
+          "status": "FINALIZED",
+          "sender": "0x2c33c95575530580eeb377fc6f841dea694fd4ae"
+        },
+        {
+          "method": "settle",
+          "tx": "0xa31f8b9fde402224ccf3524ad41e81699835f497507636efabf9fc60aaba697c",
+          "status": "FINALIZED",
+          "sender": "0x1ddf74a14205ab1cc76cac45b2ae0b29a9b78174"
+        }
+      ],
+      "readback": {
+        "phase": "SETTLED",
+        "winner": "0x2c33c95575530580eeb377fc6f841dea694fd4ae",
+        "price": 50,
+        "bidder_count": 1
+      }
+    }
+  }
+}

@@ -1,9 +1,9 @@
-# Distinctiveness and review-risk audit
+# Bounded distinctiveness assessment
 
-**Mechanism:** sealed offer commitments → reveal → independent semantic capability gate → deterministic minimum-price eligible winner.
+**Mechanism:** Sealed offers → semantic eligibility → deterministic lowest eligible price, stable address tie-break.
 
-**Participants and state:** buyer freezes one need/rule/deadlines; providers submit one commitment each; providers reveal; anyone settles. The novel invariant is that an unrevealed or semantically ineligible bid can never win, and validators do not choose the economic winner.
+**Enforced participants/state:** The buyer freezes 1–12 admitted bidders. Non-admitted identities cannot consume capacity. Admission does not prove unique people or honest portfolios. Nonreveals cannot win; anyone settles after the reveal deadline.
 
-**Nearest prior work:** AuditStrata uses commit/reveal for unbiased sampling, not offers or winner selection. EstimateEnvelope aggregates estimates rather than selecting a bid. FlowDispatch computes multi-edge allocations, not one procurement winner. No reviewed accepted contract uses this auction lifecycle.
+The six releases have different state mechanisms: sealed procurement, calibration scoring, hierarchical grants, selective correction, ordered disclosure review, and three-valued predicate composition.
 
-**Review blockers to clear before submission:** prove StudioNet finalization and read-back; test a forged reveal, an ineligible lower price, tie-break, and no eligible bid. The capability packet is bidder-supplied and not independently authenticated; the contract records a consensus-backed qualification judgment, not a performance guarantee. No escrow or funds are included.
+Local prior-contract comparisons included Agent Output Grounding Verifier, Consent Scope Verifier, Dependency Lifecycle Oracle, Digital Deliverable Verifier, QuestionZero, CycleCut, AuditStrata, EstimateEnvelope and FlowDispatch. These are scoped architectural comparisons, not proof of global uniqueness. No complete current Portal reviewed-cohort inventory was established. Before submission, compare current judgments, roles, state transitions and invariants; a new domain name is insufficient. Do not promise acceptance or points.

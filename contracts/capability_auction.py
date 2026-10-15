@@ -33,14 +33,22 @@ class CapabilityAuction(gl.Contract):
     revealed: TreeMap[str, bool]
     prices: TreeMap[str, u256]
     eligibility: TreeMap[str, str]
+    admitted: TreeMap[str, bool]
 
-    def __init__(self, auction_id: str, need: str, eligibility_rule: str, commit_deadline: u256, reveal_deadline: u256):
+    def __init__(self, auction_id: str, need: str, eligibility_rule: str, commit_deadline: u256, reveal_deadline: u256, admitted_bidders: list[str]):
         now = int(datetime.now(timezone.utc).timestamp())
         if not auction_id or len(auction_id) > 64 or not 50 <= len(need) <= MAX_TEXT or not 20 <= len(eligibility_rule) <= 1200:
             _fail("invalid_auction_terms")
         if int(commit_deadline) <= now or int(reveal_deadline) <= int(commit_deadline):
             _fail("invalid_deadlines")
         self.buyer = gl.message.sender_address
+        if not 1 <= len(admitted_bidders) <= MAX_BIDDERS:
+            _fail("invalid_admission_list")
+        for bidder in admitted_bidders:
+            key = str(bidder).lower()
+            if len(key) != 42 or not key.startswith("0x") or any(c not in "0123456789abcdef" for c in key[2:]) or key == str(self.buyer).lower() or key == "0x" + "0" * 40 or self.admitted.get(key, False):
+                _fail("invalid_admitted_bidder")
+            self.admitted[key] = True
         self.auction_id = auction_id
         self.need = need
         self.eligibility_rule = eligibility_rule
@@ -56,7 +64,7 @@ class CapabilityAuction(gl.Contract):
         now = int(datetime.now(timezone.utc).timestamp())
         if self.phase != "COMMIT" or now >= int(self.commit_deadline):
             _fail("commit_window_closed")
-        if len(self.bidders) >= MAX_BIDDERS or who == str(self.buyer).lower() or len(commitment) != 64 or any(char not in "0123456789abcdefABCDEF" for char in commitment):
+        if not self.admitted.get(who, False) or len(self.bidders) >= MAX_BIDDERS or len(commitment) != 64 or any(char not in "0123456789abcdefABCDEF" for char in commitment):
             _fail("invalid_bidder_or_commitment")
         if self.commitments.get(who, ""):
             _fail("bid_already_committed")
@@ -70,7 +78,7 @@ class CapabilityAuction(gl.Contract):
         if self.phase not in ("COMMIT", "REVEAL") or now < int(self.commit_deadline) or now >= int(self.reveal_deadline):
             _fail("reveal_window_closed")
         commitment = self.commitments.get(who, "")
-        if not commitment or self.revealed.get(who, False) or int(price) <= 0 or len(salt) < 8 or len(capability_evidence) < 20 or len(capability_evidence) > MAX_TEXT:
+        if not commitment or self.revealed.get(who, False) or int(price) <= 0 or not 8 <= len(salt) <= 128 or not 20 <= len(capability_evidence.encode("utf-8")) <= MAX_TEXT:
             _fail("invalid_reveal")
         if bid_commitment(self.auction_id, who, int(price), salt, capability_evidence) != commitment:
             _fail("commitment_mismatch")
@@ -124,3 +132,8 @@ class CapabilityAuction(gl.Contract):
     @gl.public.view
     def get_result(self) -> dict[str, Any]:
         return {"phase": self.phase, "winner": self.winner, "price": int(self.winning_price), "bidder_count": len(self.bidders)}
+
+    @gl.public.view
+    def get_bid(self, bidder: str) -> dict[str, Any]:
+        key = str(bidder).lower()
+        return {"admitted": self.admitted.get(key, False), "committed": bool(self.commitments.get(key, "")), "revealed": self.revealed.get(key, False), "price": int(self.prices.get(key, 0)), "eligibility": self.eligibility.get(key, "UNREVEALED")}

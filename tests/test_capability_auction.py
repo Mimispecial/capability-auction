@@ -12,7 +12,7 @@ def test_sealed_offer_and_lowest_eligible_win(auction, direct_vm, direct_alice, 
     prices = [80, 50]
     evidence = "Two completed incident-response engagements, with published on-call coverage records."
     for account, price in zip(bidders, prices):
-        who = str(account).lower()
+        who = "0x" + account.hex() if isinstance(account, bytes) else str(account).lower()
         direct_vm.sender = account
         auction.commit_bid(commitment("service-1", who, price, "salt-123456", evidence))
     direct_vm.warp("2026-10-15T12:01:01Z")
@@ -25,11 +25,13 @@ def test_sealed_offer_and_lowest_eligible_win(auction, direct_vm, direct_alice, 
     auction.settle()
     result = auction.get_result()
     assert result["phase"] == "SETTLED"
-    assert result["winner"].lower() == str(direct_charlie).lower()
+    assert result["winner"].lower() == ("0x" + direct_charlie.hex() if isinstance(direct_charlie, bytes) else str(direct_charlie).lower())
     assert result["price"] == 50
 
 
-def test_commitment_binds_price_and_evidence():
-    first = commitment("a", "0x01", 10, "secret-1", "proof")
-    assert first != commitment("a", "0x01", 11, "secret-1", "proof")
-    assert first != commitment("a", "0x01", 10, "secret-1", "changed proof")
+def test_commitment_binds_price_and_evidence(auction):
+    import sys
+    production = sys.modules[type(auction).__module__].bid_commitment
+    first = production("a", "0x01", 10, "secret-1", "proof")
+    assert first != production("a", "0x01", 11, "secret-1", "proof")
+    assert first != production("a", "0x01", 10, "secret-1", "changed proof")
